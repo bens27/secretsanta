@@ -133,6 +133,7 @@ html[data-theme="atheist"] {
 html[data-theme="atheist"] body {
   background: #F3F4F6;
   animation: none;
+  filter: grayscale(1);
 }
 html[data-theme="atheist"] * {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
@@ -145,7 +146,9 @@ html[data-theme="atheist"] *::after {
 }
 html[data-theme="atheist"] .postcard-frame { transform: none; border-radius: 0; box-shadow: none; padding: 1px; }
 html[data-theme="atheist"] .postcard-badge { display: none; }
-html[data-theme="atheist"] .theme-tagline { font-style: normal; font-family: ui-monospace, Menlo, monospace; }
+html[data-theme="atheist"] .theme-tagline,
+html[data-theme="atheist"] .theme-title { font-style: normal; font-family: ui-monospace, Menlo, monospace !important; }
+html[data-theme="atheist"] .theme-tagline::before { content: "> "; }
 
 /* Floating decorations */
 .theme-particle {
@@ -217,6 +220,41 @@ html[data-theme="atheist"] .theme-tagline { font-style: normal; font-family: ui-
   50% { transform: scale(1.15); opacity: 1; }
 }
 
+/* Badges bob about in every fun mode. */
+html[data-theme]:not([data-theme="classic"]):not([data-theme="atheist"]) .postcard-badge {
+  animation: ss-badge 1.6s ease-in-out infinite;
+}
+html[data-theme]:not([data-theme="classic"]):not([data-theme="atheist"]) .postcard-badge-b {
+  animation-delay: -0.8s;
+}
+@keyframes ss-badge {
+  0%, 100% { transform: rotate(-18deg) scale(1); }
+  50% { transform: rotate(18deg) scale(1.25); }
+}
+
+/* Taglines pop in when they rotate. */
+html[data-theme]:not([data-theme="atheist"]) .theme-tagline {
+  animation: ss-tagline 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes ss-tagline {
+  from { transform: scale(0.6) rotate(-3deg); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Generate Pairings explosion. */
+.theme-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  animation: ss-burst 2.5s cubic-bezier(.15,.8,.3,1) forwards;
+}
+@keyframes ss-burst {
+  0% { transform: translate(-50%, -50%) scale(0.2) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 20vh)) scale(1) rotate(var(--spin)); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .theme-particles { display: none; }
+  .postcard-badge, .theme-tagline { animation: none !important; }
 }

@@ -15,6 +15,7 @@ import { PageTransition } from '../components/PageTransition';
 import { Code, Heart, Rows, Star } from '@phosphor-icons/react';
 import { Settings } from '../components/Settings';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useTheme } from '../components/ThemeProvider';
 import { Layout } from '../components/Layout';
 
 function migrateParticipants(value: any) {
@@ -87,6 +88,7 @@ export function Home() {
   const [googleClientIdOverride, setGoogleClientIdOverride] = useLocalStorage<string>('secretSantaGoogleClientId', '');
   const googleClientId = googleClientIdOverride.trim() || import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
+  const { theme, celebrate } = useTheme();
   const [selectedParticipantId, setSelectedParticipantId] = useState<string | null>(null);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
   const [openSection, setOpenSection] = useState<'participants' | 'links' | 'settings'>('participants');
@@ -102,6 +104,7 @@ export function Home() {
     }
 
     setAssignments(assignments);
+    celebrate();
     setOpenSection('links');
   };
 
@@ -136,7 +139,7 @@ export function Home() {
           <PostCard>
             <div className="space-y-4">
               <h1 className="theme-title text-xl sm:text-2xl font-bold mb-4 text-red-700">
-                {t('home.title')}
+                {t(`themes.${theme.id}.title`) || t('home.title')}
               </h1>
               <div className="space-y-4 text-gray-600">
                 <Trans

@@ -15,6 +15,14 @@ final class WebWindowController: NSWindowController, WKNavigationDelegate, WKUID
     let bridge = NativeBridge()
     configuration.userContentController.addScriptMessageHandler(bridge, contentWorld: .page, name: NativeBridge.name)
 
+    // A self-test run has to be frontmost (WebKit pauses animations in
+    // background windows), so it ignores real keyboard input: otherwise
+    // whatever the user is typing elsewhere lands in the autofocused name field.
+    if ProcessInfo.processInfo.environment["SECRETSANTA_SELFTEST"] == "1" {
+      let blockInput = "for (const t of ['keydown', 'keypress', 'beforeinput', 'paste', 'drop']) addEventListener(t, e => { if (e.isTrusted) e.preventDefault(); }, true);"
+      configuration.userContentController.addUserScript(WKUserScript(source: blockInput, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+    }
+
     webView = WKWebView(frame: .zero, configuration: configuration)
     self.bridge = bridge
 

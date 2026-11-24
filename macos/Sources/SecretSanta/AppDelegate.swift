@@ -10,11 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     controller.showWindow(nil)
     windowController = controller
 
-    // A self-test run stays in the background so keystrokes meant for
-    // another app can't land in the autofocused name field.
-    if ProcessInfo.processInfo.environment["SECRETSANTA_SELFTEST"] != "1" {
-      NSApp.activate(ignoringOtherApps: true)
-    }
+    NSApp.activate(ignoringOtherApps: true)
   }
 
   func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
