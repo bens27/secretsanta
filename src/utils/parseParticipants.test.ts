@@ -170,3 +170,48 @@ describe('formatParticipantText', () => {
     );
   });
 }); 
+describe('emails', () => {
+  it('should parse emails alongside hints and rules, in either order', () => {
+    const input = `
+      Alice <alice@example.com> (likes cats) =Bob
+      Bob (likes dogs) <bob@example.com> !Charlie
+      Charlie <charlie@example.com>
+      Dave
+    `;
+
+    const result = parseParticipantsText(input);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const byName = Object.fromEntries(Object.values(result.participants).map(p => [p.name, p]));
+    expect(byName.Alice.email).toBe('alice@example.com');
+    expect(byName.Alice.hint).toBe('likes cats');
+    expect(byName.Alice.rules).toEqual([{ type: 'must', targetParticipantId: byName.Bob.id }]);
+    expect(byName.Bob.email).toBe('bob@example.com');
+    expect(byName.Bob.hint).toBe('likes dogs');
+    expect(byName.Bob.rules).toEqual([{ type: 'mustNot', targetParticipantId: byName.Charlie.id }]);
+    expect(byName.Charlie.email).toBe('charlie@example.com');
+    expect(byName.Charlie.hint).toBeUndefined();
+    expect(byName.Dave.email).toBeUndefined();
+  });
+
+  it('should reject invalid emails', () => {
+    expect(parseParticipantsText('Alice <not-an-email>')).toMatchObject({ ok: false, line: 1, key: 'errors.invalidEmail' });
+    expect(parseParticipantsText('Alice\nBob <bob@example.com')).toMatchObject({ ok: false, line: 2, key: 'errors.invalidEmail' });
+  });
+
+  it('should round-trip through the text format', () => {
+    const participants: Record<string, Participant> = {
+      id1: { id: 'id1', name: 'Alice', email: 'alice@example.com', hint: 'likes cats', rules: [{ type: 'mustNot', targetParticipantId: 'id2' }] },
+      id2: { id: 'id2', name: 'Bob', email: 'bob@example.com', rules: [] },
+    };
+
+    const text = formatParticipantText(participants);
+    expect(text).toBe('Alice <alice@example.com> (likes cats) !Bob\nBob <bob@example.com>\n');
+
+    const result = parseParticipantsText(text);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(formatParticipantText(result.participants)).toBe(text);
+  });
+});

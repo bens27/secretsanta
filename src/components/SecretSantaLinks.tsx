@@ -5,15 +5,17 @@ import { CopyButton } from "./CopyButton";
 import { generateAssignmentLink, generateCSV } from "../utils/links";
 import { Participant } from "../types";
 import { GeneratedPairs, generateGenerationHash } from "../utils/generatePairs";
+import { EmailAssignments, EmailPairing } from "./EmailAssignments";
 
 interface SecretSantaLinksProps {
   assignments: GeneratedPairs;
   instructions?: string;
   participants: Record<string, Participant>;
+  googleClientId: string;
   onGeneratePairs: () => void;
 }
 
-export function SecretSantaLinks({ assignments, instructions, participants, onGeneratePairs }: SecretSantaLinksProps) {
+export function SecretSantaLinks({ assignments, instructions, participants, googleClientId, onGeneratePairs }: SecretSantaLinksProps) {
   const { t } = useTranslation();
 
   const currentHash = generateGenerationHash(participants);
@@ -28,6 +30,18 @@ export function SecretSantaLinks({ assignments, instructions, participants, onGe
   adjustedPairings.sort((a, b) => {
     return a[0].localeCompare(b[0]);
   });
+
+  const emailPairings: EmailPairing[] = assignments.pairings.map(({giver, receiver}) => ({
+    giverId: giver.id || giver.name,
+    giverName: participants[giver.id]?.name ?? giver.name,
+    giverEmail: participants[giver.id]?.email,
+    receiverName: participants[receiver.id]?.name ?? receiver.name,
+    receiverHint: participants[receiver.id]?.hint,
+  }));
+
+  emailPairings.sort((a, b) => a.giverName.localeCompare(b.giverName));
+
+  const generationKey = JSON.stringify(assignments.pairings.map(({giver, receiver}) => [giver.id, receiver.id]));
 
   const handleExportCSV = () => {
     const csvContent = generateCSV(adjustedPairings.map(([giver, receiver]) => [giver, receiver]));
@@ -84,6 +98,15 @@ export function SecretSantaLinks({ assignments, instructions, participants, onGe
           </React.Fragment>
         ))}
       </div>
+    </div>
+    <div className="mt-4">
+      <EmailAssignments
+        pairings={emailPairings}
+        instructions={instructions}
+        googleClientId={googleClientId}
+        isStale={hasChanged}
+        generationKey={generationKey}
+      />
     </div>
   </>;
 }

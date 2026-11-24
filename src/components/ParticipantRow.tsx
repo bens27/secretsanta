@@ -1,12 +1,14 @@
 import { Gear, X } from "@phosphor-icons/react";
 import { Participant } from '../types';
 import { useTranslation } from 'react-i18next';
+import { isValidEmail } from '../utils/parseParticipants';
 
 interface ParticipantRowProps {
   participant: Participant;
   participantIndex: number;
   isLast: boolean;
   onNameChange: (name: string) => void;
+  onEmailChange: (email: string) => void;
   onOpenRules: () => void;
   onRemove: () => void;
 }
@@ -16,6 +18,7 @@ export function ParticipantRow({
   participantIndex,
   isLast,
   onNameChange,
+  onEmailChange,
   onOpenRules,
   onRemove,
 }: ParticipantRowProps) {
@@ -35,6 +38,16 @@ export function ParticipantRow({
 
       {!isLast && (
         <>
+          <input
+            type="email"
+            value={participant.email ?? ''}
+            onChange={(e) => onEmailChange(e.target.value)}
+            className={`flex-1 min-w-0 p-2 border rounded ${
+              participant.email && !isValidEmail(participant.email) ? 'border-red-500' : ''
+            }`}
+            placeholder={t('participants.enterEmail')}
+            aria-label={t('participants.enterEmail')}
+          />
           <button
             onClick={onOpenRules}
             className={`px-2 sm:px-3 py-2 rounded hover:opacity-80 flex-shrink-0 ${

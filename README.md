@@ -8,6 +8,26 @@ Should you appreciate this tool so much that you'd like to thank me, you can eit
 
 <br/>
 
+## Emailing assignments from Gmail
+
+Besides sharing secret links, the organizer can add an email address for each participant and send everyone their assignment directly from their own Gmail account. It all runs in the browser: Google gives the page a short-lived token limited to the `gmail.send` scope (it can send mail but not read the inbox), and the page calls the Gmail API with it.
+
+Emails can be entered in the form view, or in the text view with angle brackets, in any order with the hint:
+
+```
+Alice <alice@example.com> (likes cats) !Bob
+Bob <bob@example.com>
+```
+
+### Setting up a Google OAuth client
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), create a project and enable the **Gmail API**.
+2. Configure the **OAuth consent screen** (External is fine) and add the `https://www.googleapis.com/auth/gmail.send` scope. While the app is in *Testing* mode, add your own Google account as a test user; Google will show an "unverified app" warning you can click through.
+3. Create an **OAuth client ID** of type *Web application*, and add the origin the app is served from (e.g. `http://localhost:5173` and/or `https://<you>.github.io`) as an **Authorized JavaScript origin**.
+4. Either paste the client ID in the app's **Settings** section (stored in your browser only), or bake it into the build with the `VITE_GOOGLE_CLIENT_ID` environment variable.
+
+Note that a copy of each email lands in the organizer's *Sent* folder.
+
 ## License (MIT)
 
 > **Copyright © 2015 Maël Nison**

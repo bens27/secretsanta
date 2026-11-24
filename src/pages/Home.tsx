@@ -84,6 +84,8 @@ export function Home() {
   const [participants, setParticipants] = useLocalStorage<Record<string, Participant>>('secretSantaParticipants', {}, migrateParticipants);
   const [assignments, setAssignments] = useLocalStorage<GeneratedPairs | null>('secretSantaAssignments', null, migrateAssignments);
   const [instructions, setInstructions] = useLocalStorage<string>('secretSantaInstructions', '');
+  const [googleClientIdOverride, setGoogleClientIdOverride] = useLocalStorage<string>('secretSantaGoogleClientId', '');
+  const googleClientId = googleClientIdOverride.trim() || import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
   const [selectedParticipantId, setSelectedParticipantId] = useState<string | null>(null);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
@@ -185,6 +187,9 @@ export function Home() {
               <Settings
                 instructions={instructions}
                 onChangeInstructions={setInstructions}
+                googleClientId={googleClientIdOverride}
+                defaultGoogleClientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                onChangeGoogleClientId={setGoogleClientIdOverride}
               />
             </Accordion>
 
@@ -198,6 +203,7 @@ export function Home() {
                   assignments={assignments}
                   instructions={instructions}
                   participants={participants}
+                  googleClientId={googleClientId}
                   onGeneratePairs={handleGeneratePairs}
                 />
               </Accordion>

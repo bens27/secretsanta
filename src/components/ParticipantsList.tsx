@@ -33,6 +33,19 @@ export function ParticipantsList({
     }));
   };
 
+  const updateEmail = (id: string, email: string) => {
+    onChangeParticipants(produce(participants, draft => {
+      if (!draft[id]) return;
+
+      const trimmed = email.trim();
+      if (trimmed) {
+        draft[id].email = trimmed;
+      } else {
+        delete draft[id].email;
+      }
+    }));
+  };
+
   const removeParticipant = (id: string) => {
     onChangeParticipants(produce(participants, draft => {
       delete draft[id];
@@ -65,6 +78,7 @@ export function ParticipantsList({
             participantIndex={index}
             isLast={index === Object.keys(participants).length}
             onNameChange={(name) => updateParticipant(participant.id, name)}
+            onEmailChange={(email) => updateEmail(participant.id, email)}
             onOpenRules={() => onOpenRules(participant.id)}
             onRemove={() => removeParticipant(participant.id)}
           />
