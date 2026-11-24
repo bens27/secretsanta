@@ -43,6 +43,11 @@ jobs:
         env:
           VITE_BASE_URL: '/${{ github.event.repository.name }}'
 
+      # GitHub Pages has no SPA rewrites: serve the app for unknown paths
+      # (e.g. /pairing) so React Router can render them client-side.
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
