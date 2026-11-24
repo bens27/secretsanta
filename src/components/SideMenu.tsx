@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES } from '../i18n/config';
 import * as Flags from 'country-flag-icons/react/3x2';
 import { Link } from 'react-router-dom';
+import { useTheme } from './ThemeProvider';
+import { isThemeId, THEME_IDS, THEMES } from '../themes';
 
 function Flag({className, code}: {className?: string, code: string}) {
   const upperCode = code.toUpperCase();
@@ -30,12 +32,35 @@ export function MenuItem({icon, to, onClick, children}: {icon: React.ReactNode, 
   return render;
 }
 
+function ThemePicker() {
+  const { t } = useTranslation();
+  const { theme, setThemeId } = useTheme();
+
+  return (
+    <label className={`flex items-center bg-white/60 hover:bg-white transition-colors rounded shadow px-2 py-1 cursor-pointer select-none`}>
+      <div className={`flex items-center justify-center w-6 mr-2 text-center`}>{theme.icon}</div>
+      <span className={`sr-only`}>{t(`themes.label`)}</span>
+      <select
+        className={`bg-transparent cursor-pointer outline-none`}
+        value={theme.id}
+        onChange={e => isThemeId(e.target.value) && setThemeId(e.target.value)}
+        title={t(`themes.label`)}
+      >
+        {THEME_IDS.map(id => (
+          <option key={id} value={id}>{THEMES[id].icon} {t(`themes.${id}.name`)}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 export function SideMenu({children}: {children?: React.ReactNode}) {
   const { i18n, t } = useTranslation();
 
   return (
     <div className="lg:absolute top-4 left-4 z-50 flex flex-col items-start space-y-2">
       {children}
+      <ThemePicker />
       {SUPPORTED_LANGUAGES.map((language) => (
         <MenuItem key={language} icon={<Flag className={`h-3`} code={language} />} onClick={() => i18n.changeLanguage(language)}>
           {t(`language.name`, {lng: language})}

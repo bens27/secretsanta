@@ -79,6 +79,7 @@ export const fr: Translations = {
     instructionsPlaceholder: "Par exemple le budget, la date, le lieu...",
     instructionsHelp: "Elles seront affichées à tous les participants sur leur page d'attribution. Restez concis: cette fonction allonge la taille des liens.",
     googleClientId: "Identifiant Client OAuth Google",
+    googleClientIdHelpNative: "Nécessaire pour envoyer les attributions depuis votre Gmail. Créez un client OAuth de type « iOS » dans la Google Cloud Console avec l'identifiant de bundle {{bundleId}}, et activez l'API Gmail. (Cet identifiant est différent de celui du site web.)",
     googleClientIdHelp: "Nécessaire pour envoyer les attributions depuis votre Gmail. Créez un client OAuth de type « Application Web » dans la Google Cloud Console avec {{origin}} comme origine JavaScript autorisée, et activez l'API Gmail.",
   },
   email: {
@@ -103,5 +104,18 @@ export const fr: Translations = {
     hintLabel: "Suggestion de cadeau :",
     instructionsLabel: "De la part de l'organisateur :",
     signOff: "Joyeuses fêtes ! 🎄",
-  }
+  },
+  themes: {
+    label: "Mode",
+    classic: { name: "Classique", tagline: "" },
+    jewish: { name: "Hanoucca", tagline: "'Hag saméa'h ! Huit nuits, un cadeau très secret. Latkes facultatifs, mais vivement conseillés." },
+    hindu: { name: "Diwali", tagline: "Joyeux Diwali ! Allumez un diya, emballez un cadeau, mangez toutes les douceurs." },
+    christian: { name: "Noël", tagline: "Joyeux Noël ! Suivez l'étoile jusqu'à votre destinataire." },
+    muslim: { name: "Aïd", tagline: "Aïd Moubarak ! De l'Eidi pour tout le monde, et des douceurs pour l'organisateur." },
+    buddhist: { name: "Vesak", tagline: "Joyeux Vesak ! Offrez en pleine conscience. Recevez sans attachement. Ne trichez pas." },
+    zoroastrian: { name: "Norouz", tagline: "Norouz Mobarak ! Bonnes pensées, bonnes paroles, bons cadeaux." },
+    rastafarian: { name: "Rastafari", tagline: "One love ! Chaque petit cadeau, ça va aller." },
+    pastafarian: { name: "Pastafarisme", tagline: "Joyeux Holiday (oui, c'est vraiment son nom). Ramen ! Que votre cadeau soit touché par Son Appendice Nouilleux." },
+    atheist: { name: "Athée", tagline: "Protocole d'échange de cadeaux initialisé. Aucune festivité détectée." },
+  },
 };

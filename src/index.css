@@ -14,27 +14,35 @@ body {
   font-family: 'Comic Sans MS';
 }
 
+:root {
+  --stripe-a: #5CC48A;
+  --stripe-b: #EF3D3D;
+  --stripe-gap: #FFFFFF;
+  --badge-a: #5CC48A;
+  --badge-b: #EF3D3D;
+}
+
 .bg-postcard {
   background: repeating-linear-gradient(
     45deg,
-    #5CC48A,
-    #5CC48A 30px,
-    #FFFFFF 30px,
-    #FFFFFF 60px,
-    #EF3D3D 60px,
-    #EF3D3D 90px,
-    #FFFFFF 90px,
-    #FFFFFF 120px
+    var(--stripe-a),
+    var(--stripe-a) 30px,
+    var(--stripe-gap) 30px,
+    var(--stripe-gap) 60px,
+    var(--stripe-b) 60px,
+    var(--stripe-b) 90px,
+    var(--stripe-gap) 90px,
+    var(--stripe-gap) 120px
   );
 }
 
 .bg-postcard-nowhite {
   background: repeating-linear-gradient(
     45deg,
-    #5CC48A,
-    #5CC48A 30px,
-    #EF3D3D 30px,
-    #EF3D3D 60px
+    var(--stripe-a),
+    var(--stripe-a) 30px,
+    var(--stripe-b) 30px,
+    var(--stripe-b) 60px
   );
 }
 
@@ -53,4 +61,162 @@ body {
   100% {
     background-position: 130px 640px, 0 300px, 0 0
   }
+}
+
+/* ---------- Festive modes (see src/themes.ts) ---------- */
+
+.postcard-badge-a { background-color: var(--badge-a) !important; }
+.postcard-badge-b { background-color: var(--badge-b) !important; }
+
+/* The snowy cats-and-tree backdrop only suits the classic and Christmas modes. */
+html[data-theme]:not([data-theme="classic"]):not([data-theme="christian"]):not([data-theme="atheist"]) body {
+  background: var(--page-bg) fixed;
+  animation: none;
+}
+
+html[data-theme="jewish"] {
+  --stripe-a: #1D4ED8; --stripe-b: #60A5FA; --stripe-gap: #FFFFFF;
+  --badge-a: #1D4ED8; --badge-b: #FBBF24;
+  --page-bg: linear-gradient(180deg, #E0ECFF, #F8FAFF);
+  --title: #1D4ED8;
+}
+html[data-theme="hindu"] {
+  --stripe-a: #F97316; --stripe-b: #DB2777; --stripe-gap: #FDE047;
+  --badge-a: #F97316; --badge-b: #DB2777;
+  --page-bg: radial-gradient(circle at 50% 0%, #FFE8B3, #FFD1DC 60%, #FFC48C);
+  --title: #C2410C;
+}
+html[data-theme="christian"] {
+  --stripe-a: #B91C1C; --stripe-b: #CA8A04; --stripe-gap: #FFFBEB;
+  --badge-a: #1E3A8A; --badge-b: #B91C1C;
+  --title: #991B1B;
+}
+html[data-theme="muslim"] {
+  --stripe-a: #047857; --stripe-b: #D4A017; --stripe-gap: #FFFFFF;
+  --badge-a: #064E3B; --badge-b: #D4A017;
+  --page-bg: linear-gradient(180deg, #0B3B2E, #1E5B4A 55%, #F3E3B5);
+  --title: #047857;
+}
+html[data-theme="buddhist"] {
+  --stripe-a: #F59E0B; --stripe-b: #7F1D1D; --stripe-gap: #FFF7ED;
+  --badge-a: #F59E0B; --badge-b: #7F1D1D;
+  --page-bg: linear-gradient(180deg, #FFF1D6, #FCE7F3);
+  --title: #92400E;
+}
+html[data-theme="zoroastrian"] {
+  --stripe-a: #DC2626; --stripe-b: #F59E0B; --stripe-gap: #FFFFFF;
+  --badge-a: #DC2626; --badge-b: #16A34A;
+  --page-bg: linear-gradient(180deg, #FFF7E6, #E8F7E4);
+  --title: #B91C1C;
+}
+html[data-theme="rastafarian"] {
+  --stripe-a: #DC2626; --stripe-b: #16A34A; --stripe-gap: #FACC15;
+  --badge-a: #16A34A; --badge-b: #DC2626;
+  --page-bg: linear-gradient(180deg, #DC2626 0 33%, #FACC15 33% 66%, #16A34A 66%);
+  --title: #15803D;
+}
+html[data-theme="pastafarian"] {
+  --stripe-a: #F2C14E; --stripe-b: #C0392B; --stripe-gap: #FFF8E7;
+  --badge-a: #C0392B; --badge-b: #1F2937;
+  --page-bg: repeating-linear-gradient(0deg, #FFF3D6 0 24px, #FFE7A8 24px 26px);
+  --title: #B45309;
+}
+
+html[data-theme] .theme-title { color: var(--title, #B91C1C); }
+
+/* Atheist: a completely sterile, no-fun environment. */
+html[data-theme="atheist"] {
+  --stripe-a: #9CA3AF; --stripe-b: #9CA3AF; --stripe-gap: #D1D5DB;
+  --page-bg: #F3F4F6;
+  --title: #111827;
+}
+html[data-theme="atheist"] body {
+  background: #F3F4F6;
+  animation: none;
+}
+html[data-theme="atheist"] * {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
+}
+html[data-theme="atheist"] *,
+html[data-theme="atheist"] *::before,
+html[data-theme="atheist"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+html[data-theme="atheist"] .postcard-frame { transform: none; border-radius: 0; box-shadow: none; padding: 1px; }
+html[data-theme="atheist"] .postcard-badge { display: none; }
+html[data-theme="atheist"] .theme-tagline { font-style: normal; font-family: ui-monospace, Menlo, monospace; }
+
+/* Floating decorations */
+.theme-particle {
+  position: absolute;
+  top: -3rem;
+  opacity: 0.85;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.theme-particle-fall { animation-name: ss-fall; }
+.theme-particle-spin { animation-name: ss-spin; }
+.theme-particle-sway { animation-name: ss-sway; animation-timing-function: ease-in-out; }
+.theme-particle-wiggle { animation-name: ss-wiggle; animation-timing-function: ease-in-out; }
+.theme-particle-groove { animation-name: ss-groove; }
+.theme-particle-rise { top: auto; bottom: -3rem; animation-name: ss-rise; animation-timing-function: ease-out; }
+.theme-particle-twinkle { animation-name: ss-twinkle; animation-timing-function: ease-in-out; }
+
+@keyframes ss-fall {
+  from { transform: translateY(0); }
+  to { transform: translateY(110vh); }
+}
+/* Dreidels and gelt spin on the way down. */
+@keyframes ss-spin {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(110vh) rotate(1080deg); }
+}
+@keyframes ss-sway {
+  0% { transform: translate(0, 0) rotate(-10deg); }
+  25% { transform: translate(2rem, 27vh) rotate(10deg); }
+  50% { transform: translate(-2rem, 55vh) rotate(-10deg); }
+  75% { transform: translate(2rem, 82vh) rotate(10deg); }
+  100% { transform: translate(0, 110vh) rotate(-10deg); }
+}
+/* Noodly appendages wobble. */
+@keyframes ss-wiggle {
+  0% { transform: translate(0, 0) rotate(0deg) scaleX(1); }
+  20% { transform: translate(-3rem, 22vh) rotate(25deg) scaleX(1.3); }
+  40% { transform: translate(3rem, 44vh) rotate(-25deg) scaleX(0.8); }
+  60% { transform: translate(-3rem, 66vh) rotate(25deg) scaleX(1.3); }
+  80% { transform: translate(3rem, 88vh) rotate(-25deg) scaleX(0.8); }
+  100% { transform: translate(0, 110vh) rotate(0deg) scaleX(1); }
+}
+/* Bouncing to the beat. */
+@keyframes ss-groove {
+  0% { transform: translate(0, 0) scale(1); }
+  10% { transform: translate(1rem, 11vh) scale(1.25); }
+  20% { transform: translate(-1rem, 22vh) scale(1); }
+  30% { transform: translate(1rem, 33vh) scale(1.25); }
+  40% { transform: translate(-1rem, 44vh) scale(1); }
+  50% { transform: translate(1rem, 55vh) scale(1.25); }
+  60% { transform: translate(-1rem, 66vh) scale(1); }
+  70% { transform: translate(1rem, 77vh) scale(1.25); }
+  80% { transform: translate(-1rem, 88vh) scale(1); }
+  90% { transform: translate(1rem, 99vh) scale(1.25); }
+  100% { transform: translate(0, 110vh) scale(1); }
+}
+/* Lamps, lanterns and flames float upwards. */
+@keyframes ss-rise {
+  0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+  10% { opacity: 0.9; }
+  50% { transform: translate(1.5rem, -55vh) scale(1); }
+  90% { opacity: 0.9; }
+  100% { transform: translate(-1rem, -110vh) scale(1.1); opacity: 0; }
+}
+/* Moons and stars glimmer in place. */
+@keyframes ss-twinkle {
+  0%, 100% { transform: scale(0.7); opacity: 0.2; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-particles { display: none; }
 }

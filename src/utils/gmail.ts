@@ -2,6 +2,12 @@
 // browser: Google Identity Services gives us a short-lived OAuth access token
 // restricted to the `gmail.send` scope (it can send mail but not read any),
 // and we call the Gmail REST API with it. Nothing goes through a backend.
+//
+// Inside the macOS app the browser popup flow isn't available, so both the
+// authorization and the API call are delegated to the native side, which
+// signs in through the system browser (see macos/Sources/SecretSanta/GmailAuth.swift).
+
+import { callNative, isNativeApp } from './native';
 
 export const GMAIL_SEND_SCOPE = 'https://www.googleapis.com/auth/gmail.send';
 
@@ -41,7 +47,7 @@ let gisPromise: Promise<void> | null = null;
 // Load the GIS script ahead of time: the token popup must be opened directly
 // from a click handler, or browsers will block it.
 export function loadGoogleIdentityServices(): Promise<void> {
-  if (window.google?.accounts?.oauth2)
+  if (isNativeApp() || window.google?.accounts?.oauth2)
     return Promise.resolve();
 
   gisPromise ??= new Promise<void>((resolve, reject) => {
@@ -65,6 +71,13 @@ export interface GmailToken {
 }
 
 export function requestGmailToken(clientId: string): Promise<GmailToken> {
+  if (isNativeApp()) {
+    return callNative<{ accessToken: string; expiresIn: number }>('gmailAuthorize', { clientId }).then(result => ({
+      accessToken: result.accessToken,
+      expiresAt: Date.now() + result.expiresIn * 1000,
+    }));
+  }
+
   const oauth2 = window.google?.accounts?.oauth2;
   if (!oauth2)
     return Promise.reject(new Error('Google Identity Services is not loaded yet'));
@@ -93,6 +106,11 @@ export function requestGmailToken(clientId: string): Promise<GmailToken> {
 }
 
 export function revokeGmailToken(token: GmailToken) {
+  if (isNativeApp()) {
+    callNative('gmailRevoke', { accessToken: token.accessToken }).catch(() => {});
+    return;
+  }
+
   window.google?.accounts?.oauth2?.revoke(token.accessToken);
 }
 
@@ -159,25 +177,37 @@ export function buildRawMessage(message: EmailMessage, boundary = `secretsanta-$
 }
 
 export async function sendGmailMessage(token: GmailToken, message: EmailMessage): Promise<void> {
-  const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token.accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ raw: buildRawMessage(message) }),
-  });
+  const raw = buildRawMessage(message);
 
-  if (response.ok)
+  let status: number;
+  let bodyText: string;
+
+  if (isNativeApp()) {
+    ({ status, body: bodyText } = await callNative<{ status: number; body: string }>('gmailSend', { accessToken: token.accessToken, raw }));
+  } else {
+    const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ raw }),
+    });
+
+    status = response.status;
+    bodyText = await response.text().catch(() => '');
+  }
+
+  if (status >= 200 && status < 300)
     return;
 
-  let detail = `${response.status} ${response.statusText}`;
+  let detail = `HTTP ${status}`;
   try {
-    const body = await response.json();
+    const body = JSON.parse(bodyText);
     if (body?.error?.message) detail = body.error.message;
   } catch {}
 
-  if (response.status === 401)
+  if (status === 401)
     throw new GmailAuthError(detail);
 
   throw new Error(detail);

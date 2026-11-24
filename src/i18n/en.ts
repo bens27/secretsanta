@@ -77,6 +77,7 @@ export const en = {
     instructionsPlaceholder: "e.g., budget, date, location...",
     instructionsHelp: "They will be shown to all participants on their assignment page. Keep it short: it increases the length of the links.",
     googleClientId: "Google OAuth Client ID",
+    googleClientIdHelpNative: "Needed to send assignments from your Gmail. Create an \"iOS\" OAuth client in the Google Cloud Console with bundle ID {{bundleId}}, and enable the Gmail API. (This is a different client ID from the website's.)",
     googleClientIdHelp: "Needed to send assignments from your Gmail. Create a \"Web application\" OAuth client in the Google Cloud Console with {{origin}} as an authorized JavaScript origin, and enable the Gmail API.",
   },
   email: {
@@ -102,4 +103,17 @@ export const en = {
     instructionsLabel: "From the organizer:",
     signOff: "Happy holidays! 🎄",
   },
-}; 
+  themes: {
+    label: "Mode",
+    classic: { name: "Classic", tagline: "" },
+    jewish: { name: "Hanukkah", tagline: "Chag sameach! Eight nights, one very secret gift. Latkes optional, highly recommended." },
+    hindu: { name: "Diwali", tagline: "Happy Diwali! Light a diya, wrap a gift, eat all the sweets." },
+    christian: { name: "Christmas", tagline: "Merry Christmas! Follow the star to your giftee." },
+    muslim: { name: "Eid", tagline: "Eid Mubarak! Eidi for everyone, and sweets for the organizer." },
+    buddhist: { name: "Vesak", tagline: "Happy Vesak! Give mindfully. Receive without attachment. Try not to peek." },
+    zoroastrian: { name: "Nowruz", tagline: "Nowruz Mobarak! Good thoughts, good words, good gifts." },
+    rastafarian: { name: "Rastafari", tagline: "One love! Every little gift is gonna be alright." },
+    pastafarian: { name: "Pastafarian", tagline: "Happy Holiday (yes, that is its actual name). Ramen! May your gift be touched by His Noodly Appendage." },
+    atheist: { name: "Atheist", tagline: "Gift exchange protocol initialized. No festivities detected." },
+  },
+};

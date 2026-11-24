@@ -2,7 +2,10 @@ import { encryptText } from "./crypto";
 import { ReceiverData } from "../types";
 
 export async function generateAssignmentLink(giver: string, receiver: string, receiverHint?: string, instructions?: string) {
-  const baseUrl = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '')}`;
+  // The macOS app is served from a private URL scheme, so its links must
+  // point at the public website instead (set at build time).
+  const baseUrl = import.meta.env.VITE_PUBLIC_URL?.replace(/\/$/, '')
+    ?? `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '')}`;
   
   // If there's a hint, encrypt a JSON object
   const dataToEncrypt = receiverHint

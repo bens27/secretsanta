@@ -135,7 +135,7 @@ export function Home() {
         <div className="lg:flex-[6_6_0%]">
           <PostCard>
             <div className="space-y-4">
-              <h1 className="text-xl sm:text-2xl font-bold mb-4 text-red-700">
+              <h1 className="theme-title text-xl sm:text-2xl font-bold mb-4 text-red-700">
                 {t('home.title')}
               </h1>
               <div className="space-y-4 text-gray-600">

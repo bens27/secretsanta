@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider, useNavigate, useSearchParams } fro
 import { Home } from './pages/Home';
 import { Pairing } from './pages/Pairing';
 import { useEffect } from 'react';
+import { ThemeProvider } from './components/ThemeProvider';
 
 function Redirect({ to }: { to: string }) {
   const [searchParams] = useSearchParams();
@@ -35,5 +36,7 @@ const router = createBrowserRouter([{
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  <RouterProvider router={router} />
+  <ThemeProvider>
+    <RouterProvider router={router} />
+  </ThemeProvider>
 ); 

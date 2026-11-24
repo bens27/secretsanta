@@ -89,7 +89,7 @@ export function Pairing() {
             transition={{ ease: `easeIn`, duration: .6 }}
           >
             <PostCard>
-              <h1 className="text-3xl font-bold mb-6 text-center text-red-700">
+              <h1 className="theme-title text-3xl font-bold mb-6 text-center text-red-700">
                 {t('pairing.title')}
               </h1>
               <p className="mb-6 text-center text-gray-600">

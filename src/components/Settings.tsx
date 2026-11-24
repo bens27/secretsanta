@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { isNativeApp } from '../utils/native';
 
 interface SettingsProps {
   instructions: string;
@@ -35,7 +36,9 @@ export function Settings({ instructions, onChangeInstructions, googleClientId, d
             {t('settings.googleClientId')}
           </h4>
           <p className="mt-1 text-xs text-gray-500">
-            {t('settings.googleClientIdHelp', { origin: window.location.origin })}
+            {isNativeApp()
+              ? t('settings.googleClientIdHelpNative', { bundleId: 'com.bens27.secretsanta' })
+              : t('settings.googleClientIdHelp', { origin: window.location.origin })}
           </p>
         </div>
         <input

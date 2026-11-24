@@ -28,6 +28,19 @@ Bob <bob@example.com>
 
 Note that a copy of each email lands in the organizer's *Sent* folder.
 
+## Festive modes
+
+The mode picker in the side menu (under the menu links) changes the colors, postcard badges and floating decorations: Classic, Hanukkah, Diwali, Christmas, Eid, Vesak, Nowruz, Rastafari, Pastafarian, and a deliberately joyless Atheist mode with no animations at all. The choice is stored in the browser; decorations are hidden for people who have turned on *reduce motion* in their system settings.
+
+## Mac app
+
+`macos/` contains a native macOS wrapper (Swift + WKWebView) that bundles the web UI, so it works offline and signs in to Gmail natively instead of with a browser popup.
+
+1. Build it with `macos/build.sh` (needs Xcode command line tools and Node). This writes `macos/build/Secret Santa.app`. Secret links the app generates point to `https://bens27.github.io/secretsanta`; set `VITE_PUBLIC_URL` to change that.
+2. To send emails, create a second OAuth client ID in the Google Cloud Console, of type **iOS** (Google's type for native Apple apps) with bundle ID `com.bens27.secretsanta`. Paste its client ID in the app's **Settings**. The web client ID from above won't work in the app.
+
+The app is ad-hoc signed, so it's for running on the machine that built it. Sharing it with others would need a Developer ID certificate and notarization.
+
 ## License (MIT)
 
 > **Copyright © 2015 Maël Nison**
