@@ -6,13 +6,14 @@ import { AccordionContainer } from '../components/AccordionContainer';
 import { ParticipantsList } from '../components/ParticipantsList';
 import { ParticipantsTextView } from '../components/ParticipantsTextView';
 import { SecretSantaLinks } from '../components/SecretSantaLinks';
+import { Credits } from '../components/Credits';
 import { Participant, Rule } from '../types';
 import { Link } from 'react-router-dom';
 import { PostCard } from '../components/PostCard';
 import { Trans, useTranslation } from 'react-i18next';
 import { MenuItem } from '../components/SideMenu';
 import { PageTransition } from '../components/PageTransition';
-import { Code, Heart, Rows, Star } from '@phosphor-icons/react';
+import { Code, Rows } from '@phosphor-icons/react';
 import { Settings } from '../components/Settings';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useTheme } from '../components/ThemeProvider';
@@ -108,16 +109,7 @@ export function Home() {
     setOpenSection('links');
   };
 
-  const menuItems = [
-    <div className="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2">
-      <MenuItem key={`vanity`} to="https://bsky.app/profile/mael.dev" icon={<Star className={`text-orange-500`} weight={`fill`}/>}>
-        {t(`home.vanity`)}
-      </MenuItem>
-      <MenuItem key={`sponsor`} to="https://github.com/sponsors/arcanis?frequency=one-time&sponsor=arcanis" icon={<Heart className={`text-red-700`} weight={`fill`}/>}>
-        {t(`home.sponsor`)}
-      </MenuItem>
-    </div>,
-  ];
+  const menuItems: React.ReactNode[] = [];
 
   const toggleViewButton = (
     <button
@@ -134,7 +126,7 @@ export function Home() {
 
   return <>
     <PageTransition>
-      <Layout menuItems={menuItems}>
+      <Layout menuItems={menuItems} corner={<Credits/>}>
         <div className="lg:flex-[6_6_0%]">
           <PostCard>
             <div className="space-y-4">

@@ -20,6 +20,8 @@ export const en = {
   home: {
     vanity: "Project started in winter 2015 by Maël",
     sponsor: "Support me on GitHub",
+    diversified: "Diversified in winter 2026 by Ben",
+    spareChange: "Spare some change?",
     title: "Secret Santa Planner",
     explanation: [
       "Welcome! This tool will help you arrange your holiday gift exchanges. Simply list all participants, and we'll randomly assign pairings according to the rules you set.",

@@ -3,10 +3,12 @@ import { MenuItem, SideMenu } from "./SideMenu";
 
 export type LayoutProps = {
   menuItems: React.ReactNode[];
+  /** Pinned to the bottom-right corner on large screens, below the page otherwise. */
+  corner?: React.ReactNode;
   children: React.ReactNode;
 };
 
-export function Layout({ menuItems, children }: LayoutProps) {
+export function Layout({ menuItems, corner, children }: LayoutProps) {
   return (
     <div className="min-h-screen flex lg:items-center justify-center p-4 lg:overflow-hidden">
       <div className="container mx-auto max-w-5xl">
@@ -17,6 +19,8 @@ export function Layout({ menuItems, children }: LayoutProps) {
         <div className="my-12 md:my-16 flex flex-col justify-around lg:flex-row gap-12 md:gap-16">
           {children}
         </div>
+
+        {corner}
       </div>
     </div>
   );
