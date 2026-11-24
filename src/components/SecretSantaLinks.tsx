@@ -6,6 +6,7 @@ import { generateAssignmentLink, generateCSV } from "../utils/links";
 import { Participant } from "../types";
 import { GeneratedPairs, generateGenerationHash } from "../utils/generatePairs";
 import { EmailAssignments, EmailPairing } from "./EmailAssignments";
+import { useTheme } from "./ThemeProvider";
 
 interface SecretSantaLinksProps {
   assignments: GeneratedPairs;
@@ -17,6 +18,7 @@ interface SecretSantaLinksProps {
 
 export function SecretSantaLinks({ assignments, instructions, participants, googleClientId, onGeneratePairs }: SecretSantaLinksProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   const currentHash = generateGenerationHash(participants);
   const hasChanged = currentHash !== assignments.hash;
@@ -90,7 +92,7 @@ export function SecretSantaLinks({ assignments, instructions, participants, goog
               {giver}:
             </span>
             <CopyButton
-              textToCopy={() => generateAssignmentLink(giver, receiver, hint, instructions)}
+              textToCopy={() => generateAssignmentLink(giver, receiver, hint, instructions, theme.id)}
               className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center gap-2"
             >
               {t('links.copySecretLink')}

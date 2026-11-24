@@ -11,6 +11,8 @@ import { motion } from 'framer-motion';
 import CryptoJS from 'crypto-js';
 import { Layout } from "../components/Layout";
 import { ReceiverData } from "../types";
+import { useSanta, useTheme } from "../components/ThemeProvider";
+import { isThemeId } from "../themes";
 
 async function loadPairing(searchParams: URLSearchParams): Promise<[string, ReceiverData]> {
   // Legacy pairings, not generated anymore; remove after 2025-01-01
@@ -47,6 +49,15 @@ export function Pairing() {
   const [error, setError] = useState<string | null>(null);
   const [assignment, setAssignment] = useState<[string, ReceiverData] | null>(null);
   const [instructions, setInstructions] = useState<string | null>(null);
+  const { setOverrideId } = useTheme();
+  const santa = useSanta();
+
+  // Show the organizer's mode from the link, without saving it.
+  const mode = searchParams.get('mode');
+  useEffect(() => {
+    setOverrideId(isThemeId(mode) ? mode : null);
+    return () => setOverrideId(null);
+  }, [mode, setOverrideId]);
 
   useEffect(() => {
     const decryptReceiver = async () => {
@@ -74,7 +85,7 @@ export function Pairing() {
 
   const menuItems = [
     <MenuItem key={`back`} to="/" icon={<ArrowLeft weight={`bold`}/>}>
-      {t('pairing.startYourOwn')}
+      {t('pairing.startYourOwn', { santa })}
     </MenuItem>
   ];
 
@@ -90,7 +101,7 @@ export function Pairing() {
           >
             <PostCard>
               <h1 className="theme-title text-3xl font-bold mb-6 text-center text-red-700">
-                {t('pairing.title')}
+                {t('pairing.title', { santa })}
               </h1>
               <p className="mb-6 text-center text-gray-600">
                 <Trans

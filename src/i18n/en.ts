@@ -3,6 +3,7 @@ export const en = {
     flag: "🇺🇸",
     name: "English",
   },
+  santa: "Secret Santa",
   errors: {
     needMoreParticipants: "Need at least 2 participants!",
     invalidPairs: "Couldn't generate valid pairs with the current rules. Please check the rules and try again.",
@@ -28,11 +29,11 @@ export const en = {
     exampleLink: "Example link",
   },
   pairing: {
-    title: "Your Secret Santa Assignment",
+    title: "Your {{santa}} Assignment",
     assignment: "Welcome, <name/>! You have been picked to get a gift for:",
     loading: "Loading...",
     error: "Failed to decrypt the message. The link might be invalid.",
-    startYourOwn: "Start a Secret Santa!"
+    startYourOwn: "Start a {{santa}}!"
   },
   participants: {
     title: "Participants",
@@ -96,7 +97,7 @@ export const en = {
     confirmSendAll_one: "Send {{count}} email from your Gmail account now?",
     confirmSendAll_other: "Send {{count}} emails from your Gmail account now?",
     missingEmails: "No email address for: {{names}}. Share their secret link instead.",
-    subject: "Your Secret Santa assignment 🎁",
+    subject: "Your {{santa}} assignment 🎁",
     greeting: "Hi {{name}},",
     assignment: "You have been picked to get a gift for:",
     hintLabel: "Gift hint:",
@@ -108,7 +109,8 @@ export const en = {
     classic: { name: "Classic", title: "", taglines: [] as string[] },
     jewish: {
       name: "Hanukkah",
-      title: "Secret Shamash Planner",
+      title: "Secret Shlomo Planner",
+      santa: "Secret Shlomo",
       taglines: [
         "Eight nights of gifts and you only have to plan one. Your mother would be so proud. Would it kill you to call her?",
         "Have you eaten? You look thin. Here, have a latke. Have four.",

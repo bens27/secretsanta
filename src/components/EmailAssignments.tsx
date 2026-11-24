@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { GmailAuthError, GmailToken, loadGoogleIdentityServices, requestGmailToken, revokeGmailToken, sendGmailMessage } from '../utils/gmail';
 import { buildAssignmentEmail } from '../utils/assignmentEmail';
 import { isValidEmail } from '../utils/parseParticipants';
+import { useSanta } from './ThemeProvider';
 
 export interface EmailPairing {
   giverId: string;
@@ -30,6 +31,7 @@ interface EmailAssignmentsProps {
 
 export function EmailAssignments({ pairings, instructions, googleClientId, isStale, generationKey }: EmailAssignmentsProps) {
   const { t } = useTranslation();
+  const santa = useSanta();
 
   const [token, setToken] = useState<GmailToken | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -90,7 +92,7 @@ export function EmailAssignments({ pairings, instructions, googleClientId, isSta
           receiverHint: pairing.receiverHint,
           instructions,
           strings: {
-            subject: t('email.subject'),
+            subject: t('email.subject', { santa }),
             greeting: t('email.greeting', { name: pairing.giverName }),
             assignment: t('email.assignment'),
             hintLabel: t('email.hintLabel'),

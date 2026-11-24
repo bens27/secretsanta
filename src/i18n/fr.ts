@@ -5,6 +5,7 @@ export const fr: Translations = {
     flag: "🇫🇷",
     name: "Français",
   },
+  santa: "Secret Santa",
   errors: {
     needMoreParticipants: "Il faut au moins 2 participants !",
     invalidPairs: "Impossible de générer des paires valides avec les règles actuelles. Veuillez vérifier les règles et réessayer.",
@@ -30,11 +31,11 @@ export const fr: Translations = {
     exampleLink: "Exemple de lien",
   },
   pairing: {
-    title: "Votre Partenaire de Secret Santa",
+    title: "Votre Partenaire de {{santa}}",
     assignment: "Bienvenue, <name/> ! Vous avez été sélectionné(e) pour offrir un cadeau à :",
     loading: "Chargement...",
     error: "Échec du décryptage du message. Le lien pourrait être invalide.",
-    startYourOwn: "Créez Votre Secret Santa !"
+    startYourOwn: "Créez Votre {{santa}} !"
   },
   participants: {
     title: "Participants",
@@ -98,7 +99,7 @@ export const fr: Translations = {
     confirmSendAll_one: "Envoyer {{count}} email depuis votre compte Gmail maintenant ?",
     confirmSendAll_other: "Envoyer {{count}} emails depuis votre compte Gmail maintenant ?",
     missingEmails: "Pas d'adresse email pour : {{names}}. Partagez-leur plutôt leur lien secret.",
-    subject: "Votre attribution Secret Santa 🎁",
+    subject: "Votre attribution {{santa}} 🎁",
     greeting: "Bonjour {{name}},",
     assignment: "Vous avez été sélectionné(e) pour offrir un cadeau à :",
     hintLabel: "Suggestion de cadeau :",
@@ -110,7 +111,8 @@ export const fr: Translations = {
     classic: { name: "Classique", title: "", taglines: [] },
     jewish: {
       name: "Hanoucca",
-      title: "Organisateur de Chamach Secret",
+      title: "Organisateur de Secret Shlomo",
+      santa: "Secret Shlomo",
       taglines: [
         "Huit nuits de cadeaux et vous n'en organisez qu'une. Votre mère serait si fière. Ça vous tuerait de l'appeler ?",
         "Tu as mangé ? Tu as l'air maigre. Tiens, prends un latke. Prends-en quatre.",
